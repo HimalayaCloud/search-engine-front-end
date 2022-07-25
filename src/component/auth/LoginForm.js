@@ -1,24 +1,24 @@
 import React, { Fragment } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { Link , useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
-
+import AlertMessage from "../layout/AlertMessage";
 
 const LoginForm = () => {
   // Context
-  const{loginUser} = useContext(AuthContext)
-// Router
-
-const navigate = useNavigate()
+  const { loginUser } = useContext(AuthContext);
+  // Router
 
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
   });
 
-  const {username, password} = loginForm
+  const [alert, setAlert] = useState(null);
+
+  const { username, password } = loginForm;
 
   const onChangeLoginForm = (event) => {
     setLoginForm({
@@ -27,23 +27,28 @@ const navigate = useNavigate()
     });
   };
 
-  const login = async event => {
+  const login = async (event) => {
     event.preventDefault();
     try {
-      const loginData = await loginUser(loginForm)
-      if(loginData.success) {
-        navigate('/dashboard')
-      }else {
-        console.log(loginData)
+      const loginData = await loginUser(loginForm);
+      if (loginData.success) {
+        // navigate('/dashboard')
+        console.log("login successful");
+      } else {
+        console.log(loginData);
+        setAlert({ type: "danger", message: loginData.message });
+        setTimeout(() => {
+          setAlert(null);
+        }, 3000);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
- 
-  }
+  };
 
   return (
     <Fragment>
+      <AlertMessage info={alert}></AlertMessage>
       <Form onSubmit={login}>
         <Form.Group>
           <Form.Control

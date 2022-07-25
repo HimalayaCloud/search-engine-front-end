@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import { Navigate , Outlet} from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import Spinner from "react-bootstrap/esm/Spinner";
+
 
 const ProtectedRoute = () => {
   const {
@@ -17,9 +18,13 @@ const ProtectedRoute = () => {
   }
 
   if (isAuthenticated) {
-    return <Outlet></Outlet>
-  }else {
-    return <Navigate to="/login"></Navigate>
+    return (
+      <>
+        <Outlet></Outlet>
+      </>
+    );
+  } else {
+    return <Navigate to="/login"></Navigate>;
   }
 };
 
